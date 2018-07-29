@@ -9,7 +9,9 @@ namespace CryptoApp
 	{
 		public App ()
 		{
-			InitializeComponent();
+		    // Initialize Live Reload.
+		    LiveReload.Init();
+            InitializeComponent();
 
 			MainPage = new MainPage();
 		}
