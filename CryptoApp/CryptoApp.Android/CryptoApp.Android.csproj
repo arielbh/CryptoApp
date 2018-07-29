@@ -54,6 +54,12 @@
     <PackageReference Include="CryptoExchange.Net">
       <Version>0.0.31</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Forms">
+      <Version>7.0.0.396</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI">
+      <Version>8.3.1</Version>
+    </PackageReference>
     <PackageReference Include="System.Reactive">
       <Version>4.0.0</Version>
     </PackageReference>

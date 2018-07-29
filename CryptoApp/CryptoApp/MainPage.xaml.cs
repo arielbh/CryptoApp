@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bittrex.Net;
+using CryptoApp.ViewModels;
 using Xamarin.Forms;
 
 namespace CryptoApp
@@ -16,19 +17,9 @@ namespace CryptoApp
 		public MainPage()
 		{
 			InitializeComponent();
-            Appearing += MainPage_Appearing;
+		    BindingContext = new MainViewModel();
 		}
 
-        private async void MainPage_Appearing(object sender, EventArgs e)
-        {
-            var socketClient = new BittrexSocketClient();
-            var subcribtionSuccess = await socketClient.SubscribeToMarketSummariesUpdateAsync(data =>
-            {
-                // Handle data
-            });
-            //int counter = 0;
-            //Observable.Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1)).
-            //   ObserveOn(SynchronizationContext.Current).Subscribe(l => Label.Text += (++counter).ToString());
-        }
+       
     }
 }
