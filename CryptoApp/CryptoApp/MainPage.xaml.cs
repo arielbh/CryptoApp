@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Bittrex.Net;
 using Xamarin.Forms;
 
 namespace CryptoApp
@@ -18,11 +19,16 @@ namespace CryptoApp
             Appearing += MainPage_Appearing;
 		}
 
-        private void MainPage_Appearing(object sender, EventArgs e)
+        private async void MainPage_Appearing(object sender, EventArgs e)
         {
-            int counter = 0;
-            Observable.Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1)).
-               ObserveOn(SynchronizationContext.Current).Subscribe(l => Label.Text += (++counter).ToString());
+            var socketClient = new BittrexSocketClient();
+            var subcribtionSuccess = await socketClient.SubscribeToMarketSummariesUpdateAsync(data =>
+            {
+                // Handle data
+            });
+            //int counter = 0;
+            //Observable.Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1)).
+            //   ObserveOn(SynchronizationContext.Current).Subscribe(l => Label.Text += (++counter).ToString());
         }
     }
 }

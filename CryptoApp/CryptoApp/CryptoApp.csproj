@@ -4,6 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.0.0" />
     <PackageReference Include="System.Reactive.Core" Version="4.0.0" />
@@ -12,5 +17,20 @@
     <PackageReference Include="System.Reactive.PlatformServices" Version="4.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
     <PackageReference Include="Xamarin.LiveReload" Version="0.3.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Bittrex.Net">
+      <HintPath>..\..\..\..\..\..\..\Users\ariel\.nuget\packages\bittrex.net\2.1.10\lib\netstandard2.0\Bittrex.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="CryptoExchange.Net">
+      <HintPath>..\..\..\..\..\..\..\Users\ariel\.nuget\packages\cryptoexchange.net\0.0.31\lib\netstandard2.0\CryptoExchange.Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
