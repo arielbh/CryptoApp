@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Bittrex.Net.Objects;
+using Prism.Mvvm;
 using Xamarin.Forms;
 
 namespace CryptoApp.Model
 {
-    public class MarketSummary : BindableObject
+    public class MarketSummary : BindableBase
     {
         private string _marketName;
 
@@ -18,7 +19,7 @@ namespace CryptoApp.Model
                 if (value != _marketName)
                 {
                     _marketName = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -33,7 +34,7 @@ namespace CryptoApp.Model
                 if (value != _high)
                 {
                     _high = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -48,7 +49,7 @@ namespace CryptoApp.Model
                 if (value != _low)
                 {
                     _low = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -64,7 +65,7 @@ namespace CryptoApp.Model
                 if (value != _volume)
                 {
                     _volume = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -81,7 +82,7 @@ namespace CryptoApp.Model
                 if (value != _last)
                 {
                     _last = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace CryptoApp.Model
                 if (value != _timeStamp)
                 {
                     _timeStamp = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -111,7 +112,7 @@ namespace CryptoApp.Model
                 if (value != _bid)
                 {
                     _bid = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -126,7 +127,7 @@ namespace CryptoApp.Model
                 if (value != _ask)
                 {
                     _ask = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }

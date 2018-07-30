@@ -1,23 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
+using System.Threading;
 using Bittrex.Net.Objects;
 using CryptoApp.Service;
 using Prism.Commands;
 using Prism.Mvvm;
+using Xamarin.Essentials;
 
 namespace CryptoApp.ViewModels
 {
     public class OrderBooksViewModel : BindableBase
     {
+        private BittrexMarket[] _fullList;
         private readonly ExchangeService _exchangeService;
 
         public OrderBooksViewModel(ExchangeService exchangeService)
         {
             _exchangeService = exchangeService;
             GetOrderBooksCommand.ObservesProperty(() => SelectedMarket);
-
+            GetOrderBooksCommand.ObservesProperty(() => Connection);
+            GetMarketsCommand.ObservesProperty(() => Connection);
         }
+
+
+        public NetworkAccess Connection => Connectivity.NetworkAccess;
+
         private DelegateCommand _getMarketCommand;
 
         public DelegateCommand GetMarketsCommand
@@ -27,10 +39,33 @@ namespace CryptoApp.ViewModels
                 return _getMarketCommand ?? (_getMarketCommand = new DelegateCommand(
                            async () =>
                            {
-                               Markets = await _exchangeService.GetMarketsAsync();
+                               _fullList = await _exchangeService.GetMarketsAsync();
+                               Markets = _fullList.ToArray();
                            }
-                       ));
+                       , () => Connection == NetworkAccess.Internet));
             }
+        }
+
+        private string _filterText;
+
+        public string FilterText
+        {
+            get => _filterText;
+            set
+            {
+                if (value != _filterText)
+                {
+                    _filterText = value;
+                    RaisePropertyChanged();
+                    Filter(FilterText);
+                }
+            }
+        }
+
+        private void Filter(string filterText)
+        {
+            if (_fullList == null) return;
+            Markets = _fullList.Where(m => m.MarketName.Contains(filterText)).ToArray();
         }
 
         private BittrexMarket[] _markets;
@@ -43,7 +78,7 @@ namespace CryptoApp.ViewModels
                 if (value != _markets)
                 {
                     _markets = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -58,7 +93,7 @@ namespace CryptoApp.ViewModels
                 if (value != _selectedMarket)
                 {
                     _selectedMarket = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -77,7 +112,7 @@ namespace CryptoApp.ViewModels
                                Sell = data.Sell;
 
                            },
-                           () => SelectedMarket != null));
+                           () => SelectedMarket != null && Connection == NetworkAccess.Internet));
             }
         }
 
@@ -91,7 +126,7 @@ namespace CryptoApp.ViewModels
                 if (value != _buy)
                 {
                     _buy = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -106,7 +141,7 @@ namespace CryptoApp.ViewModels
                 if (value != _sell)
                 {
                     _sell = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }

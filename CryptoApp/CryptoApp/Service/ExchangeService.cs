@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Bittrex.Net;
 using Bittrex.Net.Objects;
 using CryptoExchange.Net;
+using Xamarin.Essentials;
 
 namespace CryptoApp.Service
 {
@@ -12,6 +13,7 @@ namespace CryptoApp.Service
     {
         public async Task<BittrexMarket[]> GetMarketsAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetMarketsAsync();
@@ -22,10 +24,12 @@ namespace CryptoApp.Service
 
                 return null;
             }
+                
         }
 
         public async Task<BittrexMarketSummary[]> GetMarketSummariesAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetMarketSummariesAsync();
@@ -40,6 +44,7 @@ namespace CryptoApp.Service
 
         public async Task<BittrexOrderBook> GetOrderBooksAsync(string market)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetOrderBookAsync(market);
@@ -54,6 +59,7 @@ namespace CryptoApp.Service
 
         public async Task<CallResult<int>> SubscribeToMarkets(Action<List<BittrexStreamMarketSummary>> callback)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
             var client = new BittrexSocketClient();
             {
                 return await client.SubscribeToMarketSummariesUpdateAsync(callback);

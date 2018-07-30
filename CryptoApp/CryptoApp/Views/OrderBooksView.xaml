@@ -13,13 +13,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackLayout Orientation="Horizontal">
+        <Label Text="{Binding Connection, StringFormat='Connection: {0}'}"/>
+        <StackLayout Grid.Row="1" Orientation="Horizontal">
             <Button Text="Markets:" Command="{Binding GetMarketsCommand}"/>
             <Picker WidthRequest="100" ItemsSource="{Binding Markets}" ItemDisplayBinding="{Binding MarketName}" SelectedItem="{Binding SelectedMarket}"/>
         </StackLayout>
-        <Grid Grid.Row="1">
+        <StackLayout Grid.Row="2"  Orientation="Horizontal">
+            <Label Text="Filter:" />
+            <Entry Text="{Binding FilterText, Mode=TwoWay}"/>
+        </StackLayout>       
+        <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -35,10 +42,10 @@
             <Label Grid.Column="1" Grid.Row="1"  Text="{Binding SelectedMarket.BaseCurrencyLong, StringFormat='Base Currency: {0}'}"/>
             <Label Grid.Column="1" Grid.Row="2"  Text="{Binding SelectedMarket.MinTradeSize, StringFormat='Minimum Trade Size: {0}'}"/>
         </Grid>
-        <StackLayout Grid.Row="2" Orientation="Horizontal">
+        <StackLayout Grid.Row="4" Orientation="Horizontal">
             <Button Text="Get OrderBooks" Command="{Binding GetOrderBooksCommand}"/>
         </StackLayout>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

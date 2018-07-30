@@ -97,7 +97,7 @@ namespace CryptoApp.ViewModels
                 if (value != _summaries)
                 {
                     _summaries = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
