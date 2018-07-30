@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using Bittrex.Net;
 using Bittrex.Net.Objects;
 using CryptoApp.Model;
@@ -29,7 +31,8 @@ namespace CryptoApp.ViewModels
                 return _getSummariesCommand ?? (_getSummariesCommand = new DelegateCommand(
                            async () =>
                            {
-                               CreateOrUpdate(await _exchangeService.GetMarketSummariesAsync());
+                               _exchangeService.GetMarketSummariesObservable().Retry(30).ObserveOn(SynchronizationContext.Current).
+                                   Subscribe(CreateOrUpdate);
                            }));
             }
         }

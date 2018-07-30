@@ -70,7 +70,34 @@ namespace CryptoApp.Service
 
         public IObservable<BittrexMarketSummary[]> GetMarketSummariesObservable()
         {
-            return Observable.Empty<BittrexMarketSummary[]>();
+            return Observable.Create<BittrexMarketSummary[]>(async observer =>
+            {
+                using (var client = new BittrexClient())
+                {
+                    try
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(1));
+                        if (ConnectionService.NetworkAccess != NetworkAccess.Internet)
+                        {
+                            throw new Exception("Fake: No Internet");
+                        }
+                        var result = await client.GetMarketSummariesAsync();
+                        if (result.Success)
+                        {
+                            observer.OnNext(result.Data);
+                            observer.OnCompleted();
+                        }
+                        else
+                        {
+                            observer.OnError(new Exception(result.Error.Message));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        observer.OnError(e);
+                    }
+                }
+            });
         }
 
         public IObservable<BittrexOrderBookEntry[]> GetBuyOrderBooksUpdates(
