@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -107,6 +108,7 @@ namespace CryptoApp.ViewModels
         }
 
         private DelegateCommand _getOrderBooksCommand;
+        private CompositeDisposable _dispose;
 
         public DelegateCommand GetOrderBooksCommand
         {
@@ -115,12 +117,13 @@ namespace CryptoApp.ViewModels
                 return _getOrderBooksCommand ?? (_getOrderBooksCommand = new DelegateCommand(
                            () =>
                            {
-                               Observable.Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1)).Subscribe(async _ =>
-                               {
-                                   var data = await _exchangeService.GetOrderBooksAsync(SelectedMarket.MarketName);
-                                   Buy = data.Buy;
-                                   Sell = data.Sell;
-                               });
+                               _dispose?.Dispose();
+                               _dispose = new CompositeDisposable(
+                                   _exchangeService.GetBuyOrderBooksUpdates(SelectedMarket.MarketName)
+                                       .Subscribe(v => Buy = v.ToList()),
+                                   _exchangeService.GetSellOrderBooksUpdates(SelectedMarket.MarketName)
+                                       .Subscribe(v => Sell = v.ToList()));
+
                            },
                            () => SelectedMarket != null && Connection == NetworkAccess.Internet));
             }
