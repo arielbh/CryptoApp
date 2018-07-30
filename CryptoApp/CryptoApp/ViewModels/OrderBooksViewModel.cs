@@ -113,12 +113,14 @@ namespace CryptoApp.ViewModels
             get
             {
                 return _getOrderBooksCommand ?? (_getOrderBooksCommand = new DelegateCommand(
-                           async () =>
+                           () =>
                            {
-                               var data = await _exchangeService.GetOrderBooksAsync(SelectedMarket.MarketName);
-                               Buy = data.Buy;
-                               Sell = data.Sell;
-
+                               Observable.Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1)).Subscribe(async _ =>
+                               {
+                                   var data = await _exchangeService.GetOrderBooksAsync(SelectedMarket.MarketName);
+                                   Buy = data.Buy;
+                                   Sell = data.Sell;
+                               });
                            },
                            () => SelectedMarket != null && Connection == NetworkAccess.Internet));
             }
