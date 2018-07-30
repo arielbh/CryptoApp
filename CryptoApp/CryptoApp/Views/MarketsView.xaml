@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CryptoApp.Views.MarketsView">
+    <Grid>
+        <Grid.Margin>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="10,30,10,20" />
+                <On Platform="Android, WinPhone, Windows" Value="0,0,0,0" />
+            </OnPlatform>
+        </Grid.Margin>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+     
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Markets Summaries" Command="{Binding GetSummariesCommand}"/>
+            <Button Text="Markets Summaries (Refresh)" Command="{Binding SubscribeSummariesCommand}"/>
+        </StackLayout>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Summaries.Values}"  HasUnevenRows="True" 
+                      SeparatorVisibility = "None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding MarketName, StringFormat='Market Name: {0}'}"/>
+                            <Label Grid.Row="1" Text="{Binding High, StringFormat='High: {0}'}"/>
+                            <Label Grid.Row="2" Text="{Binding Low, StringFormat='Low: {0}'}"/>
+                            <Label Grid.Row="3" Text="{Binding TimeStamp, StringFormat='Time: {0}'}"/>
+                            <Label Grid.Column="1" Text="{Binding Volume, StringFormat='Volume: {0}'}"/>
+                            <Label Grid.Column="1" Grid.Row="1"  Text="{Binding Last, StringFormat='Last: {0}'}"/>
+                            <Label Grid.Column="1" Grid.Row="2"  Text="{Binding Bid, StringFormat='Bid: {0}'}"/>
+                            <Label Grid.Column="1" Grid.Row="3"  Text="{Binding Ask, StringFormat='Ask: {0}'}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>

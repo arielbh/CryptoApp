@@ -1,75 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CryptoApp"
+             xmlns:views="clr-namespace:CryptoApp.Views;assembly=CryptoApp"
              x:Class="CryptoApp.MainPage">
-    <Grid>
-        <Grid.Margin>
-            <OnPlatform x:TypeArguments="Thickness">
-                <On Platform="iOS" Value="10,30,10,20" />
-                <On Platform="Android, WinPhone, Windows" Value="0,0,0,0" />
-            </OnPlatform>
-        </Grid.Margin>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackLayout Orientation="Horizontal">
-            <Button Text="Markets:" Command="{Binding GetMarketsCommand}"/>
-            <Picker WidthRequest="100" ItemsSource="{Binding Markets}" ItemDisplayBinding="{Binding MarketName}" SelectedItem="{Binding SelectedMarket}"/>
-        </StackLayout>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Text="{Binding SelectedMarket.MarketName, StringFormat='Market Name: {0}'}"/>
-            <Image WidthRequest="50" HeightRequest="50" Aspect="AspectFit" Grid.Row="1" Grid.RowSpan="2" Source="{Binding SelectedMarket.LogoUrl}"/>
-            <Label Grid.Column="1" Text="{Binding SelectedMarket.MarketCurrencyLong, StringFormat='Market Currency: {0}'}"/>
-            <Label Grid.Column="1" Grid.Row="1"  Text="{Binding SelectedMarket.BaseCurrencyLong, StringFormat='Base Currency: {0}'}"/>
-            <Label Grid.Column="1" Grid.Row="2"  Text="{Binding SelectedMarket.MinTradeSize, StringFormat='Minimum Trade Size: {0}'}"/>
-        </Grid>
-        <StackLayout Grid.Row="2" Orientation="Horizontal">
-            <Button Text="Markets Summaries" Command="{Binding GetSummariesCommand}"/>
-            <Button Text="Markets Summaries (Refresh)" Command="{Binding SubscribeSummariesCommand}"/>
-
-        </StackLayout>
-
-        <ListView Grid.Row="3" ItemsSource="{Binding Summaries.Values}"  HasUnevenRows="True" 
-                      SeparatorVisibility = "None">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="{Binding MarketName, StringFormat='Market Name: {0}'}"/>
-                            <Label Grid.Row="1" Text="{Binding High, StringFormat='High: {0}'}"/>
-                            <Label Grid.Row="2" Text="{Binding Low, StringFormat='Low: {0}'}"/>
-                            <Label Grid.Row="3" Text="{Binding TimeStamp, StringFormat='Time: {0}'}"/>
-                            <Label Grid.Column="1" Text="{Binding Volume, StringFormat='Volume: {0}'}"/>
-                            <Label Grid.Column="1" Grid.Row="1"  Text="{Binding Last, StringFormat='Last: {0}'}"/>
-                            <Label Grid.Column="1" Grid.Row="2"  Text="{Binding Bid, StringFormat='Bid: {0}'}"/>
-                            <Label Grid.Column="1" Grid.Row="3"  Text="{Binding Ask, StringFormat='Ask: {0}'}"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
-</ContentPage>
+    <views:OrderBooksView Title="OrderBooks" BindingContext="{Binding OrderBooksViewModel}" />
+    <views:MarketsView Title="Markets" BindingContext="{Binding MarketsViewModel}" />
+</TabbedPage>

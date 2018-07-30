@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace CryptoApp
 {
-	public partial class MainPage : ContentPage
+	public partial class MainPage
 	{
 		public MainPage()
 		{
