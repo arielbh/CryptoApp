@@ -25,6 +25,11 @@ namespace CryptoApp.ViewModels
             GetOrderBooksCommand.ObservesProperty(() => SelectedMarket);
             GetOrderBooksCommand.ObservesProperty(() => Connection);
             GetMarketsCommand.ObservesProperty(() => Connection);
+
+            Observable.FromEvent<MyConnectivityChangedEventHandler, MyConnectivityChangedEventArgs>(
+                    h => ConnectionService.ConnectivityChanged += h,
+                    h => ConnectionService.ConnectivityChanged -= h)
+                .Subscribe(p => RaisePropertyChanged($"Connection"));
         }
 
 
