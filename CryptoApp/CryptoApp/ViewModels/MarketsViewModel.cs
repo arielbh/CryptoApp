@@ -30,7 +30,6 @@ namespace CryptoApp.ViewModels
                            async () =>
                            {
                                CreateOrUpdate(await _exchangeService.GetMarketSummariesAsync());
-                    
                            }));
             }
         }

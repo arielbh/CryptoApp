@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bittrex.Net;
@@ -13,7 +15,7 @@ namespace CryptoApp.Service
     {
         public async Task<BittrexMarket[]> GetMarketsAsync()
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if (ConnectionService.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetMarketsAsync();
@@ -21,15 +23,12 @@ namespace CryptoApp.Service
                 {
                     return result.Data;
                 }
-
                 return null;
             }
-                
         }
-
         public async Task<BittrexMarketSummary[]> GetMarketSummariesAsync()
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if (ConnectionService.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetMarketSummariesAsync();
@@ -37,14 +36,13 @@ namespace CryptoApp.Service
                 {
                     return result.Data;
                 }
-
                 return null;
             }
-        }
 
+        }
         public async Task<BittrexOrderBook> GetOrderBooksAsync(string market)
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if (ConnectionService.NetworkAccess != NetworkAccess.Internet) return null;
             using (var client = new BittrexClient())
             {
                 var result = await client.GetOrderBookAsync(market);
@@ -59,11 +57,27 @@ namespace CryptoApp.Service
 
         public async Task<CallResult<int>> SubscribeToMarkets(Action<List<BittrexStreamMarketSummary>> callback)
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if (ConnectionService.NetworkAccess != NetworkAccess.Internet) return null;
             var client = new BittrexSocketClient();
             {
                 return await client.SubscribeToMarketSummariesUpdateAsync(callback);
             }
+        }
+        public IObservable<BittrexMarketSummary[]> GetMarketSummariesObservable()
+        {
+            return Observable.Empty<BittrexMarketSummary[]>();
+        }
+
+        public IObservable<BittrexOrderBookEntry[]> GetBuyOrderBooksUpdates(
+            string marketName)
+        {
+            return Observable.Empty<BittrexOrderBookEntry[]>();
+        }
+
+        public IObservable<BittrexOrderBookEntry[]> GetSellOrderBooksUpdates(
+            string marketName)
+        {
+            return Observable.Empty<BittrexOrderBookEntry[]>();
         }
     }
 }

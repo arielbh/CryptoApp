@@ -20,7 +20,7 @@
             </Grid.RowDefinitions>
             <StackLayout Orientation="Horizontal">
                 <Label Text="{Binding Connection, StringFormat='Connection: {0}'}"/>
-                <Button Text="Toggle Network"/>
+                <Button Text="Toggle Network" Clicked="Button_OnClicked"/>
             </StackLayout>
             <StackLayout Grid.Row="1" Orientation="Horizontal">
                 <Button Text="Markets:" Command="{Binding GetMarketsCommand}"/>

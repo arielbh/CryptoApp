@@ -28,7 +28,7 @@ namespace CryptoApp.ViewModels
         }
 
 
-        public NetworkAccess Connection => Connectivity.NetworkAccess;
+        public NetworkAccess Connection => ConnectionService.NetworkAccess;
 
         private DelegateCommand _getMarketCommand;
 
