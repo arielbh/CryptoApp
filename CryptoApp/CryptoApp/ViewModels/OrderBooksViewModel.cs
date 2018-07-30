@@ -18,6 +18,7 @@ namespace CryptoApp.ViewModels
     {
         private BittrexMarket[] _fullList;
         private readonly ExchangeService _exchangeService;
+        private readonly Subject<string> _filterSubject = new Subject<string>();
 
         public OrderBooksViewModel(ExchangeService exchangeService)
         {
@@ -30,6 +31,8 @@ namespace CryptoApp.ViewModels
                     h => ConnectionService.ConnectivityChanged += h,
                     h => ConnectionService.ConnectivityChanged -= h)
                 .Subscribe(p => RaisePropertyChanged($"Connection"));
+
+            _filterSubject.Where(s => s.Length > 2).Distinct().Throttle(TimeSpan.FromSeconds(2)).Subscribe(Filter);
         }
 
 
@@ -62,7 +65,7 @@ namespace CryptoApp.ViewModels
                 {
                     _filterText = value;
                     RaisePropertyChanged();
-                    Filter(FilterText);
+                    _filterSubject.OnNext(FilterText);
                 }
             }
         }
